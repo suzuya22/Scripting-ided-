@@ -1,0 +1,44 @@
+// Genérico compra un chance en el cual se juega eligiendo un número de 4 dígitos, que se compara con el número resultado del sorteo semanal de los viernes. Genérico apuesta $1000 a un número num, esperando que sea igual al número resultado que se conocerá el viernes.
+
+using System;
+
+class Program
+{
+    static void Main()
+    {
+     
+        int apuesta = 1000; // Cantidad de dinero que apuesta el usuario (Generico) en el enunciado
+
+      
+        Console.Write("Ingrese su número de 4 dígitos para apostar: "); // El numero de 4 digitos que el usuario (Generico) eligio para hacer el chance y apostar los 1000 (ingresado por el)
+        string entrada = Console.ReadLine(); 
+
+        int numElegido; // se convierte la entrada en un numero entero
+
+    
+        if (!int.TryParse(entrada, out numElegido) || numElegido < 0 || numElegido > 9999) // Condicional encargado de detectar si el numero 
+        {
+            Console.WriteLine("Número inválido. Debe ser un número de 4 dígitos entre 0000 y 9999."); // mensaje debug de
+            return; // finaliza el programa si el numero de 4 digitos no esta entre 0000 y 9999
+        }
+
+     
+        Random rnd = new Random(); // el numero que sera el ganador de el sorteo el dia viernes es elegido de forma aleatoria
+        int numeroGanador = rnd.Next(0, 10000); 
+
+    
+        Console.WriteLine("Número ganador del viernes: " + numeroGanador.ToString("D4"));  // Imprime en pantalla los numeros apostados y el numero ganador junto a su respectivo mensaje
+        Console.WriteLine("Número apostado por Genérico: " + numElegido.ToString("D4"));
+
+   
+        if (numElegido == numeroGanador) // se hace un igual en un condicional para comparar si ambos numeros (el elegido por el usuario y el ganador coinciden) 
+        {
+            int premio = apuesta * 4500;
+            Console.WriteLine("¡Ganaste! Premio: $" + premio);
+        }
+        else                                                           // se imprimen los mensajes correspondientes dependiendo del resultado de la comparacion
+        {
+            Console.WriteLine("Perdiste la apuesta de $" + apuesta);
+        }
+    }
+}
