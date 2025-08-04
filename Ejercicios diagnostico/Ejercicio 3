@@ -1,0 +1,86 @@
+// Escriba una función para determinar si el jugador ganó el sorteo
+//El plan de pagos es como sigue:
+//$4500 por cada $1 apostado, si el número es acertado con las cuatro cifras en su orden.
+//$200 por cada $1 apostado, si el número es acertado con las cuatro cifras en desorden
+//$400 por cada $1 apostado, si se aciertan las últimas 3 cifras del número en su orden
+//$50 por cada $1 apostado, si se aciertan las últimas 2 cifras del número en su orden
+//$5 por cada $1 apostado, si se acierta la última cifra del número.
+//Escriba una función para determinar, si el jugador obtuvo algún premio, el valor del mismo. En caso contrario, retornar un 0.
+
+
+using System;
+
+class ProgramaSorteo
+{
+    static int CalcularPremio(string numeroApostado, string numeroGanador, int montoApostado) // para este ejercicio se va a usar una funcion que contiene las variables de los numeros y el monto apostado
+    {
+ 
+        if (numeroApostado == numeroGanador)  // en caso de que el numero sea acertado en las 4 cifras que contiene y aparte estan en orden obtiene el premio mayor propuesto por el ejercicio
+        {                                         
+            return 4500 * montoApostado;
+        }
+
+      
+        char[] apostadoArray = numeroApostado.ToCharArray();
+        char[] ganadorArray = numeroGanador.ToCharArray();
+        Array.Sort(apostadoArray);
+        Array.Sort(ganadorArray);
+        if (new string(apostadoArray) == new string(ganadorArray)) //  si el numero tiene las mismas 4 cifras del numero ganador pero no estan en orden obtiene este premio comparandolo con el ganador en el arreglo
+        {
+            return 200 * montoApostado;
+        }
+
+        if (numeroApostado.Substring(1) == numeroGanador.Substring(1)) //se usan substring para extraer la parte de la cadena que se necesita, esto es necesario si en este premio se requieren los ultimos 3 numeros de la cadena del numero ganador, si el numero es 1234 y se omite el 1 con el substring el numero resultante sera "234" que es lo que nos pide para el premio de el valor apostado x 400
+
+        {
+            return 400 * montoApostado;
+        }
+
+    
+        if (numeroApostado.Substring(2) == numeroGanador.Substring(2)) // mismo caso del substring uno, solo que omitiendo los 2 valroes y dejando solo los ultimos dos valores del numero ganador para dar el premio de 50
+        {
+            return 50 * montoApostado;
+        }
+
+     
+        if (numeroApostado[3] == numeroGanador[3]) // mismo de los otros dos casos pero con el ultimo numero y solo se premia con 5 x monto apostado
+        {
+            return 5 * montoApostado;
+        }
+
+       
+        return 0; // si ningun numero coincide con el del premio se regresa con 0 de valor ganado y se pierde lo apostado
+    }
+
+    static string GenerarNumeroGanador() // funcion encargada de  generar de forma random un valor entre 0 y 9999 que sera el del valor ganador
+    {
+        Random rnd = new Random();
+        int numero = rnd.Next(0, 10000); 
+        return numero.ToString("D4");    
+    }
+
+    static void Main()
+    {
+        Console.Write("Ingrese el número apostado (4 cifras): "); // en el main se encarga de ingresar el valor de los numeros para la apuesta del usuario
+        string numeroApostado = Console.ReadLine();
+
+        if (numeroApostado.Length != 4 || !int.TryParse(numeroApostado, out _))
+        {
+            Console.WriteLine("Número inválido. Debe tener exactamente 4 cifras."); // el debug de error donde se hace saber al usuario que ingreso valores que no corresponden
+            return;
+        }
+
+        Console.Write("Ingrese el monto apostado (entero): "); // valor de el numero que sera multiplicado por las apuestas en caso de ganar
+        int monto = int.Parse(Console.ReadLine());
+
+        string numeroGanador = GenerarNumeroGanador();
+        Console.WriteLine($"El número ganador es: {numeroGanador}"); // se imprime el numero ganador en pantalla
+
+        int premio = CalcularPremio(numeroApostado, numeroGanador, monto);
+
+        if (premio > 0)
+            Console.WriteLine($"¡Ganaste ${premio}!");
+        else                                                    // se imprime de forma mas amigable si ganaste algo o si perdiste todo como usuario, similar a loterias de television
+            Console.WriteLine("No ganaste nada.");
+    }
+}

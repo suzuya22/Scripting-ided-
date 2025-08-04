@@ -16,7 +16,7 @@ class Program
         int numElegido; // se convierte la entrada en un numero entero
 
     
-        if (!int.TryParse(entrada, out numElegido) || numElegido < 0 || numElegido > 9999) // Condicional encargado de detectar si el numero 
+        if (!int.TryParse(entrada, out numElegido) || numElegido < 0 || numElegido > 9999) // Condicional encargado de detectar si el numero elegido por el usuario esta entre los 4 digitos posibles
         {
             Console.WriteLine("Número inválido. Debe ser un número de 4 dígitos entre 0000 y 9999."); // mensaje debug de
             return; // finaliza el programa si el numero de 4 digitos no esta entre 0000 y 9999
