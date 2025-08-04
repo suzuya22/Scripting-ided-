@@ -1,0 +1,121 @@
+//Implemente lo siguiente:
+//Una clase abstracta AbstractSample con los siguientes elementos:
+//Un atributo privado message, 
+//Un método abstracto PrintMessage
+//Un método virtual InvertMessage.
+//Ambos métodos reciben un string como parámetro.
+//InvertMessage invierte message
+//Dos subclases de AbstractSample (nombres a su discresión):
+//Una implementa PrintMessage imprimiendo message
+//Otra implementa PrintMessage imprimiendo message con mayúsculas y minúsculas invertidas.
+//Una de las clases sobreescribe InvertMessage para que, además de lo que hace, cambie mayúsculas por minúsculas.
+
+using System;
+// para las clases se tienen atributos y metodos los cuales pueden ser privados o publicos, las clases abstractas no pueden instanciarse para crear otros objetos con esta
+namespace EjemploAbstracto
+{
+    // Clase abstracta que no se puede instanciar
+    public abstract class MuestraAbstracta
+    {
+        private string mensaje; // variable donde se almacena el mensaje
+
+        // Constructor para inicializar el mensaje
+        public MuestraAbstracta(string mensaje)
+        {
+            this.mensaje = mensaje;
+        }
+
+        // Método abstracto
+        public abstract void ImprimirMensaje();
+
+        // Método virtual para invertir el mensaje
+        public virtual void InvertirMensaje(string entrada)
+        {
+            char[] caracteres = entrada.ToCharArray();
+            Array.Reverse(caracteres);
+            mensaje = new string(caracteres);
+        }
+
+        // Accesores protegidos para obtener y modificar el mensaje
+        protected string ObtenerMensaje()
+        {
+            return mensaje;
+        }
+
+        protected void EstablecerMensaje(string nuevoMensaje)
+        {
+            mensaje = nuevoMensaje;
+        }
+    }
+
+    // Subclase que imprime el mensaje tal como está
+    public class ImpresoraNormal : MuestraAbstracta
+    {
+        public ImpresoraNormal(string mensaje) : base(mensaje) { }
+
+        public override void ImprimirMensaje()
+        {
+            Console.WriteLine(ObtenerMensaje());
+        }
+    }
+
+    // Subclase que imprime el mensaje con mayúsculas y minúsculas invertidas
+    public class ImpresoraMayusMinus : MuestraAbstracta
+    {
+        public ImpresoraMayusMinus(string mensaje) : base(mensaje) { }
+
+        public override void ImprimirMensaje()
+        {
+            string mensaje = ObtenerMensaje();
+            string invertido = "";
+            foreach (char c in mensaje)
+            {
+                if (char.IsUpper(c))
+                    invertido += char.ToLower(c);
+                else if (char.IsLower(c))
+                    invertido += char.ToUpper(c);
+                else
+                    invertido += c;
+            }
+            Console.WriteLine(invertido);
+        }
+
+        // Sobrescribe el método para invertir y además cambiar mayúsculas por minúsculas
+        public override void InvertirMensaje(string entrada)
+        {
+            base.InvertirMensaje(entrada); // Invierte primero
+            string mensajeInvertido = ObtenerMensaje();
+            string modificado = "";
+            foreach (char c in mensajeInvertido)
+            {
+                if (char.IsUpper(c))
+                    modificado += char.ToLower(c);
+                else if (char.IsLower(c))
+                    modificado += char.ToUpper(c);
+                else
+                    modificado += c;
+            }
+            EstablecerMensaje(modificado);
+        }
+    }
+
+    // Ejemplo de uso
+    class Programa
+    {
+        static void Main(string[] args)
+        {
+            MuestraAbstracta impresora1 = new ImpresoraNormal("Hola Mundo");
+            MuestraAbstracta impresora2 = new ImpresoraMayusMinus("Hola Mundo");
+
+            Console.WriteLine("=== ImpresoraNormal ===");
+            impresora1.ImprimirMensaje();
+            impresora1.InvertirMensaje("Hola Mundo");
+            impresora1.ImprimirMensaje();
+
+            Console.WriteLine("\n=== ImpresoraMayusMinus ===");
+            impresora2.ImprimirMensaje();
+            impresora2.InvertirMensaje("Hola Mundo");
+            impresora2.ImprimirMensaje();
+        }
+    }
+}
