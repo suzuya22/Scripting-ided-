@@ -1,0 +1,33 @@
+// EscribirEscriba una función que imprima únicamente los números primos de la serie de Fibonacci hasta el n-ésimo término.
+// Escriba una función que reciba una cantidad entera de segundos y retorne un string que muestre esa cantidad en formato HH:MM:SS. NO utilizar la clase DateTime.
+
+
+using System;
+
+class Program
+{
+    static bool Numeroprimo(int num)
+    {
+        if (num < 2) return false; // si el numero es menor que 2, no es un numero primo
+        for (int i = 2; i <= Math.Sqrt(num); i++) // un numero no es primo si se puede dividir sin residuo por algun numero menor que el (sin contar el uno :D), por eso con la sumatoria se evaluan todos los divisores hasta la raiz cuadrada para identificar cuales son primos
+            if (num % i == 0) return false; // si el residuo de alguna division termina dando cero no es un numero primo
+        return true;
+    }
+
+// el bloque de la funcion Numeroprimo se encarga de verificar si el numero es primo, primero identificando si es menor que 2, luego verificando que su residuo sea 0 y solo tenga 2 divisores, 1 y el mismo numero
+    static void FibonacciPrimos(int n)
+    {
+        int a = 0, b = 1; // funcionan como los almacenes de los numeros de la serie fibonacci, donde  se suman y guardan el resultado en b otra vez
+        for (int i = 0; i < n; i++) // contador de la sumatoria hasta el N termino
+        {
+            if (Numeroprimo(a))
+            {
+                Console.WriteLine(a);// imprime el valor de "a" si se detecta que es numero primo con la funcion de Numeroprimo
+            }
+            
+                int temp = a + b;
+                a = b;
+                b = temp; // el valor de la suma se almacena en la variable temp y luego pasa ese valor a b, esto con fines de no perder los valores de a
+        }
+    }
+}
