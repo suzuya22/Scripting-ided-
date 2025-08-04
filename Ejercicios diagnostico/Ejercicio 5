@@ -1,0 +1,70 @@
+// Una clase MessageManager que instancie dos objetos AbstractSample e invoque sus métodos PrintMessage.
+
+using System;
+
+namespace EjemploMensajes
+{
+    // Clase abstracta
+    abstract class ManejadorMensaje
+    {
+        private string mensaje;
+
+        // Constructor
+        public ManejadorMensaje(string mensaje)
+        {
+            this.mensaje = mensaje;
+        }
+
+        // Método abstracto
+        public abstract void ImprimirMensaje();
+
+        // Método virtual para invertir el mensaje
+        public virtual string InvertirMensaje()
+        {
+            char[] caracteres = mensaje.ToCharArray();
+            Array.Reverse(caracteres);
+            return new string(caracteres);
+        }
+
+        // Método protegido para acceder al mensaje
+        protected string ObtenerMensaje()
+        {
+            return mensaje;
+        }
+    }
+
+    // Primera subclase
+    class MensajeNormal : ManejadorMensaje
+    {
+        public MensajeNormal(string mensaje) : base(mensaje) { }
+
+        public override void ImprimirMensaje()
+        {
+            Console.WriteLine("Mensaje normal: " + ObtenerMensaje());
+        }
+    }
+
+    // Segunda subclase
+    class MensajeInvertido : ManejadorMensaje
+    {
+        public MensajeInvertido(string mensaje) : base(mensaje) { }
+
+        public override void ImprimirMensaje()
+        {
+            Console.WriteLine("Mensaje invertido: " + InvertirMensaje());
+        }
+    }
+
+    // Clase principal que instancia los objetos
+    class GestorMensajes
+    {
+        static void Main(string[] args)
+        {
+            ManejadorMensaje mensaje1 = new MensajeNormal("Hola mundo");
+            ManejadorMensaje mensaje2 = new MensajeInvertido("Hola mundo");
+
+            mensaje1.ImprimirMensaje();  // Muestra el mensaje original
+            mensaje2.ImprimirMensaje();  // Muestra el mensaje invertido
+        }
+    }
+}
